@@ -1,0 +1,37 @@
+[
+  {
+    "value": "vanilla-js",
+    "title": "Vanilla JavaScript",
+    "dir": "capsule-vanilla-js-template"
+  },
+  {
+    "value": "vanilla-ts",
+    "title": "Vanilla TypeScript",
+    "dir": "capsule-vanilla-ts-template"
+  },
+  {
+    "value": "react-ts",
+    "title": "React + TypeScript",
+    "dir": "capsule-react-ts-template"
+  },
+  {
+    "value": "vue-ts",
+    "title": "Vue + TypeScript",
+    "dir": "capsule-vue-ts-template"
+  },
+  {
+    "value": "svelte-ts",
+    "title": "Svelte + TypeScript",
+    "dir": "capsule-svelte-ts-template"
+  },
+  {
+    "value": "angular-ts",
+    "title": "Angular + TypeScript",
+    "dir": "capsule-angular-ts-template"
+  },
+  {
+    "value": "jquery-bootstrap",
+    "title": "jQuery + Bootstrap",
+    "dir": "capsule-jquery-bootstrap-template"
+  }
+]

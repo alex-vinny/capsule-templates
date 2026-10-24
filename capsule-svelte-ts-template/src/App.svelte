@@ -1,0 +1,101 @@
+<script lang="ts">
+  import { alerts, bridge } from '@capsule/core'
+
+  let tab = 'home'
+  let rpcResult = ''
+  let pingResult = ''
+
+  function clearResults() {
+    rpcResult = ''
+    pingResult = ''
+  }
+
+  function sayHello() {
+    alerts.show({ title: 'Hello from Capsule!', message: 'Native integration is working.', style: { accentColor: '#0a84ff', cornerRadius: 20 } })
+  }
+
+  async function callHello() {
+    try {
+      const res = await bridge.call('hello', { name: 'World' })
+      rpcResult = res.message
+    } catch (e) {
+      rpcResult = e instanceof Error ? e.message : String(e)
+    }
+  }
+
+  async function callPing() {
+    try {
+      const res = await fetch('/api/ping')
+      const data = await res.json()
+      pingResult = JSON.stringify(data)
+    } catch (e) {
+      pingResult = e instanceof Error ? e.message : String(e)
+    }
+  }
+</script>
+
+<div class="shell">
+  <header class="header">
+    <div class="header-icon">⚡</div>
+    <span class="header-name">Capsule</span>
+  </header>
+
+  <main class="main">
+    {#if tab === 'home'}
+      <div class="card">
+        <span class="card-badge">Svelte + TypeScript</span>
+        <h1 class="card-title">Welcome to<br /><span>Capsule</span></h1>
+        <p class="card-desc">Your app is ready.<br />Tap below to test native integration.</p>
+        <button class="btn" onclick={sayHello}>Say Hello</button>
+      </div>
+    {:else}
+      <div class="card">
+        <span class="card-badge">Server Routes</span>
+        <h2 class="card-title"><span>API</span></h2>
+        <p class="card-desc">Backed by QuickJS on device,<br />Node.js in dev mode.</p>
+        <button class="btn" onclick={callHello}>Call hello route</button>
+        <p class="result">{rpcResult}</p>
+        <button class="btn" style="margin-top:10px" onclick={callPing}>GET /api/ping</button>
+        <p class="result">{pingResult}</p>
+        {#if rpcResult || pingResult}
+          <button class="btn btn-clear" onclick={clearResults}>Clear</button>
+        {/if}
+      </div>
+    {/if}
+  </main>
+
+  <nav class="tab-bar">
+    <button class="tab {tab === 'home' ? 'active' : ''}" onclick={() => tab = 'home'}>
+      <span class="tab-icon">⌂</span>
+      <span class="tab-label">Home</span>
+    </button>
+    <button class="tab {tab === 'server' ? 'active' : ''}" onclick={() => tab = 'server'}>
+      <span class="tab-icon">⚡</span>
+      <span class="tab-label">Server</span>
+    </button>
+  </nav>
+</div>
+
+<style>
+  :global(*, *::before, *::after) { box-sizing: border-box; margin: 0; padding: 0; }
+  :global(body) { background: #f0f4f8; }
+  .shell { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f0f4f8; color: #1c1c1e; min-height: 100vh; display: flex; flex-direction: column; }
+  .header { background: linear-gradient(135deg, #0a84ff 0%, #5856d6 100%); padding: 18px 24px; display: flex; align-items: center; gap: 10px; }
+  .header-icon { width: 32px; height: 32px; background: rgba(255,255,255,0.2); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+  .header-name { font-size: 18px; font-weight: 700; color: #fff; letter-spacing: -0.3px; }
+  .main { flex: 1; display: flex; flex-direction: column; align-items: center; padding: 32px 24px; gap: 16px; overflow-y: auto; }
+  .card { background: #fff; border-radius: 24px; padding: 36px 28px; max-width: 360px; width: 100%; box-shadow: 0 4px 32px rgba(10,132,255,0.10), 0 1px 4px rgba(0,0,0,0.06); text-align: center; }
+  .card-badge { display: inline-block; background: #f0f4f8; color: #5856d6; font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: 4px 12px; border-radius: 20px; margin-bottom: 24px; }
+  .card-title { font-size: 28px; font-weight: 800; line-height: 1.2; letter-spacing: -0.5px; margin-bottom: 12px; }
+  .card-title span { color: #0a84ff; }
+  .card-desc { font-size: 15px; color: #8e8e93; line-height: 1.5; margin-bottom: 20px; }
+  .result { font-size: 13px; color: #5856d6; margin-top: 8px; word-break: break-all; min-height: 18px; }
+  .btn { width: 100%; padding: 15px; border-radius: 14px; border: none; background: linear-gradient(135deg, #0a84ff 0%, #5856d6 100%); color: #fff; font-size: 16px; font-weight: 700; font-family: inherit; cursor: pointer; letter-spacing: -0.2px; transition: opacity 0.15s, transform 0.1s; }
+  .btn:active { opacity: 0.85; transform: scale(0.98); }
+  .btn-clear { background: none; color: #8e8e93; border: 1px solid rgba(0,0,0,0.12); margin-top: 10px; }
+  .tab-bar { display: flex; background: rgba(255,255,255,0.95); backdrop-filter: blur(10px); border-top: 1px solid rgba(0,0,0,0.08); }
+  .tab { flex: 1; display: flex; flex-direction: column; align-items: center; padding: 10px 0 14px; gap: 3px; background: none; border: none; cursor: pointer; font-family: inherit; color: #8e8e93; transition: color 0.15s; }
+  .tab.active { color: #0a84ff; }
+  .tab-icon { font-size: 22px; line-height: 1; }
+  .tab-label { font-size: 10px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; }
+</style>

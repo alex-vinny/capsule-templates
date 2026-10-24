@@ -1,0 +1,13 @@
+# Line endings: LF in the repo and in every checkout, on every OS
+# (matches Prettier's default endOfLine).
+* text=auto eol=lf
+
+# Binaries — never normalized
+*.png binary
+*.jpg binary
+*.ico binary
+*.svg text
+*.zip binary
+*.ttf binary
+*.woff binary
+*.woff2 binary
